@@ -42,12 +42,14 @@
                         recaptchaToken = token;
                     });
                 });
+
+                while (recaptchaToken == '') {
+                    await new Promise(t => setTimeout(t, 100));
+                }
             } else {
                 recaptchaToken = $('#newsletter-subscribe-block .captcha-box textarea[name="g-recaptcha-response"').val();
             }
-            while (recaptchaToken == '') {
-                await new Promise(t => setTimeout(t, 100));
-            }
+            
             return recaptchaToken;
         }       
 
