@@ -917,6 +917,19 @@ namespace Nop.Web.Controllers
             //model
             var model = await _checkoutModelFactory.PrepareShippingMethodModelAsync(cart, await _customerService.GetCustomerShippingAddressAsync(customer));
 
+            var selectedShippingOption = await _genericAttributeService
+                .GetAttributeAsync<ShippingOption>(customer, NopCustomerDefaults.SelectedShippingOptionAttribute, store.Id);
+            if (selectedShippingOption != null && selectedShippingOption.IsPickupInStore)
+            {
+                var selectedPickupPoint = await _genericAttributeService
+                    .GetAttributeAsync<PickupPoint>(customer, NopCustomerDefaults.SelectedPickupPointAttribute, store.Id);
+                model.PickupPointsModel.PickupInStore = selectedShippingOption.IsPickupInStore;
+                model.PickupPointsModel.Selected = selectedPickupPoint.Id;
+            }
+            else
+            {
+                model.PickupPointsModel.Selected = null;
+            }
             if (_shippingSettings.BypassShippingMethodSelectionIfOnlyOne &&
                 model.ShippingMethods.Count == 1)
             {

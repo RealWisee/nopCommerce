@@ -14,7 +14,14 @@
         </div>
         <script asp-location="Footer">
             $(document).ready(function () {
-                togglePickupInStore($("#@Html.IdFor(model => model.PickupInStore)"));
+                togglePickupInStore($("#@Html.IdFor(model => model.PickupInStore)")[0]);
+            });
+            
+            $(document).on('checkout_toggle_pickup_in_store', function (e) {
+                if (e.checked)
+                    $('.method-list').hide();
+                else
+                    $('.method-list').show();
             });
 
             function togglePickupInStore(pickupInStore) {
@@ -89,7 +96,7 @@
                             parameters.Add(point.PickupFee);
                         }
                         addressLine.AppendJoin(", ", parameters);
-                        <option value="@($"{point.Id}___{point.ProviderSystemName}")">@(addressLine)</option>
+                        <option selected="@(Model.Selected == point.Id)" value="@($"{point.Id}___{point.ProviderSystemName}")">@(addressLine)</option>
                     }
                 </select>
             }
