@@ -47,7 +47,7 @@ namespace Nop.Web.Controllers
             var success = false;
 
             //validate CAPTCHA
-            if (_captchaSettings.Enabled && _captchaSettings.ShowOnNewsCommentPage && !captchaValid)
+            if (_captchaSettings.Enabled && _captchaSettings.ShowOnNewsletterPage && !captchaValid)
             {
                 result = await _localizationService.GetResourceAsync("Common.WrongCaptchaMessage");
                 return Json(new { Success = success, Result = result, });
